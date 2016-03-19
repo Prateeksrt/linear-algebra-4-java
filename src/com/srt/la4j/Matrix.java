@@ -1,4 +1,4 @@
-package srt.la4j;
+package com.srt.la4j;
 
 public class  Matrix {
 
