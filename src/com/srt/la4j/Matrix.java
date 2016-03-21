@@ -18,6 +18,8 @@
 
 package com.srt.la4j;
 
+import java.util.IllegalFormatException;
+
 public class  Matrix {
 
     private final int rows;
@@ -34,7 +36,12 @@ public class  Matrix {
     public Matrix(double[][] matrix, boolean approximate) {
         this.matrix = matrix;
         this.rows = matrix.length;
-        this.columns = matrix[0].length;
+        try {
+            this.columns = matrix[0].length;
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("Not a valid 2-dimensional array! " +
+                    "Number Of columns not defined.");
+        }
         this.approximate = approximate;
         approximate();
     }
