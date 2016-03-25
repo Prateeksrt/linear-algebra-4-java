@@ -18,8 +18,6 @@
 
 package com.srt.la4j;
 
-import java.util.IllegalFormatException;
-
 public class  Matrix {
 
     private final int rows;
@@ -238,7 +236,7 @@ public class  Matrix {
         StringBuilder string = new StringBuilder();
         for(int i =0;i<rows;i++){
             for(int j =0 ;j<columns;j++){
-                string.append(get(i,j)+" ");
+                string.append(get(i, j)).append(" ");
             }
             string.append("\n");
         }
