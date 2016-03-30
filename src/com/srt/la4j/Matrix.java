@@ -192,7 +192,7 @@ public class  Matrix {
         double det = this.getDeterminant();
         if(det == 0)
             throw new Exception("This is a singular Matrix! It does not have a inverse.");
-        return adjoint().transpose().times(Math.pow(det,-1));
+        return adjoint().transpose().multiply(Math.pow(det,-1));
     }
 
     public Matrix adjoint() throws Exception {
@@ -215,7 +215,7 @@ public class  Matrix {
         return new Matrix(d,approximate);
     }
 
-    public Matrix times(double number){
+    public Matrix multiply(double number){
         double[][] d = new double[rows][columns];
         for(int i = 0;i<rows;i++){
             for(int j =0;j<columns;j++){
