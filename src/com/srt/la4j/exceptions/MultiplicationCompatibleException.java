@@ -21,8 +21,8 @@ package com.srt.la4j.exceptions;
 /**
  * Created by prateeks on 3/25/16.
  */
-public class MultiplicationInCompatibleException extends InCompatibleException {
-    public MultiplicationInCompatibleException() {
+public class MultiplicationCompatibleException extends MatrixCompatibleException {
+    public MultiplicationCompatibleException() {
         super("Matrices are not compatible for multiplication");
     }
 }

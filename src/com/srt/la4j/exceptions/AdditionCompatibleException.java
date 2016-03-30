@@ -18,12 +18,8 @@
 
 package com.srt.la4j.exceptions;
 
-public class InCompatibleException extends Exception {
-    public InCompatibleException() {
-        super("Matrix is incompatible to perform the operation.");
-    }
-
-    public InCompatibleException(String msg){
-        super(msg);
+public class AdditionCompatibleException extends MatrixCompatibleException {
+    public AdditionCompatibleException() {
+        super("Matrices are not compatible for addition");
     }
 }

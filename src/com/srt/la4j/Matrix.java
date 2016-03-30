@@ -18,8 +18,8 @@
 
 package com.srt.la4j;
 
-import com.srt.la4j.exceptions.AdditionInCompatibleException;
-import com.srt.la4j.exceptions.MultiplicationInCompatibleException;
+import com.srt.la4j.exceptions.AdditionCompatibleException;
+import com.srt.la4j.exceptions.MultiplicationCompatibleException;
 
 @SuppressWarnings("unused")
 public class  Matrix {
@@ -32,10 +32,17 @@ public class  Matrix {
     @SuppressWarnings("FieldCanBeLocal")
     private double minValue = 9.9E-10;
 
+    /**
+     * @param matrix is two dimensional array which is used to create matrix
+     */
     public Matrix(double[][] matrix){
         this(matrix,false);
     }
 
+    /**
+     * @param matrix is two dimensional array which is used to create matrix.
+     * @param approximate sets the approximation true.
+     */
     public Matrix(double[][] matrix, boolean approximate) {
         this.matrix = matrix;
         this.rows = matrix.length;
@@ -49,12 +56,29 @@ public class  Matrix {
         approximate();
     }
 
+    /**
+     * Returns the element present at rowIndex and columnIndex position.
+     * @throws ArrayIndexOutOfBoundsException if rowIndex or columnIndex are out side the range.
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @return the element present at rowIndex and columnIndex position in the matrix.
+     */
     public double get(int rowIndex, int columnIndex){
         if(rowIndex >= rows || rowIndex < 0 || columnIndex >= columns || columnIndex <0 )
             throw new ArrayIndexOutOfBoundsException();
         return matrix[rowIndex][columnIndex];
     }
 
+    /**
+     * Sets the value that will be inserted in the position specified by rowIndex and columnIndex.
+     * @throws ArrayIndexOutOfBoundsException if rowIndex or columnIndex are out side the range.
+     *
+     * @param rowIndex
+     * @param columnIndex
+     * @param value is the value that will be inserted in the position specified by
+     *              rowIndex and columnIndex.
+     */
     private void set(int rowIndex, int columnIndex, double value){
         if(rowIndex >= rows || rowIndex < 0 || columnIndex >= columns || columnIndex <0 )
             throw new ArrayIndexOutOfBoundsException();
@@ -62,7 +86,17 @@ public class  Matrix {
         approximate();
     }
 
-    public Matrix add(Matrix matrix) throws AdditionInCompatibleException {
+    /**
+     * Add matrix element wise and return a new matrix that is sum of both the matrix.
+     * Does not modifies the original matrix.
+     *
+     * @param matrix
+     * @return
+     * @throws AdditionCompatibleException if number of rows and columns of the matrix are not
+     *           equal to the number of rows and columns of matrix with which addition is going
+     *           to be performed.
+     */
+    public Matrix add(Matrix matrix) throws AdditionCompatibleException {
         if(isDimensionallyEqual(matrix)){
             double[][] d = new double[rows][columns];
             for(int i = 0; i< rows; i++){
@@ -73,10 +107,19 @@ public class  Matrix {
             }
             return new Matrix(d,approximate);
         }
-        throw new AdditionInCompatibleException();
+        throw new AdditionCompatibleException();
     }
 
-    public Matrix multiply(Matrix matrix) throws MultiplicationInCompatibleException {
+    /**
+     * Multiply the matrix with normal rule of matrix multiplication and return product matrix.
+     * This method does not modifies the original matrix.
+     *
+     * @param matrix
+     * @return
+     * @throws MultiplicationCompatibleException if number of columns of the matrix is not equal to
+     *               number of rows of the matrix with multiplication has to performed.
+     */
+    public Matrix multiply(Matrix matrix) throws MultiplicationCompatibleException {
         if(isMultiplicationCompatible(matrix)){
             double[][] d = new double[rows][columns];
             for(int i = 0; i<this.rows; i++){
@@ -90,9 +133,13 @@ public class  Matrix {
             }
             return new Matrix(d,approximate);
         }
-        throw new MultiplicationInCompatibleException();
+        throw new MultiplicationCompatibleException();
     }
 
+    /**
+     * @param dimension
+     * @return identity square matrix of dimension specified as parameter.
+     */
     public static Matrix identity(int dimension){
         double[][] d = new double[dimension][dimension];
         for(int i=0;i<dimension;i++){
@@ -104,6 +151,10 @@ public class  Matrix {
         return new Matrix(d);
     }
 
+    /**
+     * @return determinant of the given matrix.
+     * @throws Exception if the given matrix is not a square matrix.
+     */
     public double getDeterminant() throws Exception {
         if(!isSquareMatrix()){
             throw new Exception("Cannot find determinant! Not a Square matrix");
@@ -161,6 +212,12 @@ public class  Matrix {
         return matrix.rows == this.rows && matrix.columns == this.columns;
     }
 
+    /**
+     * Checks if each and every element of matrix and matches it with the matrix.
+     *
+     * @param obj
+     * @return true if equals else return false
+     */
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Matrix)){
@@ -180,6 +237,12 @@ public class  Matrix {
         return true;
     }
 
+    /**
+     * @param rowIndex
+     * @param columnIndex
+     * @return cofactor of the elements specified by rowIndex and columnIndex.
+     * @throws Exception
+     */
     public double cofactor(int rowIndex, int columnIndex) throws Exception {
         return minor(rowIndex, columnIndex) * Math.pow(-1,(rowIndex+columnIndex));
     }
@@ -188,6 +251,10 @@ public class  Matrix {
         return subMatrix(rowIndex,columnIndex).getDeterminant();
     }
 
+    /**
+     * @return inverse of the matrix
+     * @throws Exception if the given matrix is a singular matrix.
+     */
     public Matrix inverse() throws Exception {
         double det = this.getDeterminant();
         if(det == 0)
@@ -195,6 +262,10 @@ public class  Matrix {
         return adjoint().transpose().multiply(Math.pow(det,-1));
     }
 
+    /**
+     * @return adjoint of the given matrix.
+     * @throws Exception
+     */
     public Matrix adjoint() throws Exception {
         double[][] cM = new double[this.rows][this.columns];
         for(int i =0;i<rows;i++){
@@ -205,6 +276,9 @@ public class  Matrix {
         return new Matrix(cM,approximate);
     }
 
+    /**
+     * @return transpose of the given matrix
+     */
     public Matrix transpose(){
         double[][] d = new double[rows][columns];
         for(int i = 0;i<rows;i++){
@@ -215,6 +289,10 @@ public class  Matrix {
         return new Matrix(d,approximate);
     }
 
+    /**
+     * @param number
+     * @return return a matrix whose each element is multiplied by number specified as parameter.
+     */
     public Matrix multiply(double number){
         double[][] d = new double[rows][columns];
         for(int i = 0;i<rows;i++){
@@ -248,7 +326,12 @@ public class  Matrix {
         return string.toString();
     }
 
-    public Matrix multiplyElementWise(Matrix that) throws MultiplicationInCompatibleException {
+    /**
+     * @param that
+     * @return a product matrix by perform element wise multiplication
+     * @throws MultiplicationCompatibleException
+     */
+    public Matrix multiplyElementWise(Matrix that) throws MultiplicationCompatibleException {
         if(isDimensionallyEqual(that)){
             double[][] d = new double[rows][columns];
             for(int i=0;i<rows;i++){
@@ -258,6 +341,6 @@ public class  Matrix {
             }
             return new Matrix(d,approximate);
         }
-        throw new MultiplicationInCompatibleException();
+        throw new MultiplicationCompatibleException();
     }
 }
