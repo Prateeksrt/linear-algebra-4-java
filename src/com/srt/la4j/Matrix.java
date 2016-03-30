@@ -18,6 +18,10 @@
 
 package com.srt.la4j;
 
+import com.srt.la4j.exceptions.AdditionInCompatibleException;
+import com.srt.la4j.exceptions.MultiplicationInCompatibleException;
+
+@SuppressWarnings("unused")
 public class  Matrix {
 
     private final int rows;
@@ -25,6 +29,7 @@ public class  Matrix {
     private double matrix[][];
     private boolean approximate;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private double minValue = 9.9E-10;
 
     public Matrix(double[][] matrix){
@@ -57,8 +62,8 @@ public class  Matrix {
         approximate();
     }
 
-    public Matrix add(Matrix matrix) throws Exception {
-        if(isAddCompatible(matrix)){
+    public Matrix add(Matrix matrix) throws AdditionInCompatibleException {
+        if(isDimensionallyEqual(matrix)){
             double[][] d = new double[rows][columns];
             for(int i = 0; i< rows; i++){
                 for(int j = 0; j< columns; j++){
@@ -68,10 +73,10 @@ public class  Matrix {
             }
             return new Matrix(d,approximate);
         }
-        throw new Exception("Matrices are not compatible for addition");
+        throw new AdditionInCompatibleException();
     }
 
-    public Matrix multiply(Matrix matrix) throws Exception {
+    public Matrix multiply(Matrix matrix) throws MultiplicationInCompatibleException {
         if(isMultiplicationCompatible(matrix)){
             double[][] d = new double[rows][columns];
             for(int i = 0; i<this.rows; i++){
@@ -85,7 +90,7 @@ public class  Matrix {
             }
             return new Matrix(d,approximate);
         }
-        throw new Exception("Matrices are not compatible for multiplication");
+        throw new MultiplicationInCompatibleException();
     }
 
     public static Matrix identity(int dimension){
@@ -152,7 +157,7 @@ public class  Matrix {
         return this.columns == matrix.rows;
     }
 
-    private boolean isAddCompatible(Matrix matrix) {
+    private boolean isDimensionallyEqual(Matrix matrix) {
         return matrix.rows == this.rows && matrix.columns == this.columns;
     }
 
@@ -241,5 +246,18 @@ public class  Matrix {
             string.append("\n");
         }
         return string.toString();
+    }
+
+    public Matrix multiplyElementWise(Matrix that) throws MultiplicationInCompatibleException {
+        if(isDimensionallyEqual(that)){
+            double[][] d = new double[rows][columns];
+            for(int i=0;i<rows;i++){
+                for(int j=0;j<columns;j++){
+                    d[i][j] = that.get(i,j)*this.get(i,j);
+                }
+            }
+            return new Matrix(d,approximate);
+        }
+        throw new MultiplicationInCompatibleException();
     }
 }
