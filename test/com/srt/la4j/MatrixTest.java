@@ -18,6 +18,7 @@
 
 package com.srt.la4j;
 
+import com.srt.la4j.exceptions.AdditionCompatibleException;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
@@ -42,5 +43,30 @@ public class MatrixTest {
         matrix.set(1,1,10);
 
         assertEquals(10d,matrix.get(1,1));
+    }
+
+    @Test
+    public void shouldAddEachElementOfTwoMatrix() throws Exception {
+        double[][] array = {{1, 2}, {1, 2}};
+        double[][] array1 = {{1, 2}, {1, 2}};
+        Matrix matrix = new Matrix(array);
+        Matrix matrix1 = new Matrix(array1);
+
+        Matrix result = matrix.add(matrix1);
+
+        assertEquals(2d,result.get(0,0));
+        assertEquals(4d,result.get(0,1));
+        assertEquals(2d,result.get(1,0));
+        assertEquals(4d,result.get(1,1));
+    }
+
+    @Test(expected = AdditionCompatibleException.class)
+    public void addMethodShouldThrowAdditionCompatibleExceptionIfTwoMatrixAreNotEqualInSize() throws Exception {
+        double[][] array = {{1, 2}, {1, 2}};
+        double[][] array1 = {{1, 2}, {1, 2},{1,2}};
+        Matrix matrix = new Matrix(array);
+        Matrix matrix1 = new Matrix(array1);
+
+        matrix.add(matrix1);
     }
 }
