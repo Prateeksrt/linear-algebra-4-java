@@ -33,4 +33,14 @@ public class MatrixTest {
         assertEquals(2d,matrix.get(1,1));
         assertEquals(1d,matrix.get(2,0));
     }
+
+    @Test
+    public void setMethodShouldSetCorrectValueAtCorrectLocation() throws Exception {
+        double[][] array = {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
+        Matrix matrix = new Matrix(array);
+
+        matrix.set(1,1,10);
+
+        assertEquals(10d,matrix.get(1,1));
+    }
 }

@@ -79,7 +79,7 @@ public class  Matrix {
      * @param value is the value that will be inserted in the position specified by
      *              rowIndex and columnIndex.
      */
-    private void set(int rowIndex, int columnIndex, double value){
+    public void set(int rowIndex, int columnIndex, double value){
         if(rowIndex >= rows || rowIndex < 0 || columnIndex >= columns || columnIndex <0 )
             throw new ArrayIndexOutOfBoundsException();
         matrix[rowIndex][columnIndex] = value;
