@@ -158,7 +158,7 @@ public class  Matrix {
      */
     public double getDeterminant() throws Exception {
         if(!isSquareMatrix()){
-            throw new NotASqaureMatrixException("Cannot find determinant! Not a Square matrix");
+            throw new NotASqaureMatrixException();
         }
         return determinant();
     }

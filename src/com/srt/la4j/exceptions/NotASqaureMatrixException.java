@@ -19,7 +19,7 @@
 package com.srt.la4j.exceptions;
 
 public class NotASqaureMatrixException extends MatrixCompatibleException {
-    public NotASqaureMatrixException(String s) {
-        super(s);
+    public NotASqaureMatrixException() {
+        super("Not a Square matrix.");
     }
 }
