@@ -20,92 +20,85 @@ package com.srt.la4j;
 
 import com.srt.la4j.exceptions.AdditionCompatibleException;
 import com.srt.la4j.exceptions.MultiplicationCompatibleException;
+import org.junit.Before;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
 public class MatrixTest {
-    @Test
-    public void testMatrixIsCreateWithTheElements() throws Exception {
-        double[][] array = {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
-        Matrix matrix = new Matrix(array);
 
-        assertEquals(1d,matrix.get(0,0));
-        assertEquals(3d,matrix.get(2,2));
-        assertEquals(2d,matrix.get(1,1));
-        assertEquals(1d,matrix.get(2,0));
+    private Matrix matrix3x3;
+    private Matrix first2x2Matrix;
+    private Matrix second2x2Matrix;
+    private Matrix matrix3x2;
+
+
+    @Before
+    public void setUp() throws Exception {
+        double[][] array2x2 = {{1, 2}, {1, 2}};
+        double[][] secondArray2x2 = {{1, 2}, {1, 2}};
+        double[][] array3x2 = {{1, 2}, {1, 2}, {1, 2}};
+        double[][] array3x3 = {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
+
+        matrix3x3 = new Matrix(array3x3);
+        matrix3x2 = new Matrix(array3x2);
+        first2x2Matrix = new Matrix(array2x2);
+        second2x2Matrix = new Matrix(secondArray2x2);
+
     }
 
     @Test
-    public void setMethodShouldSetCorrectValueAtCorrectLocation() throws Exception {
-        double[][] array = {{1, 2, 3}, {1, 2, 3}, {1, 2, 3}};
-        Matrix matrix = new Matrix(array);
-
-        matrix.set(1,1,10);
-
-        assertEquals(10d,matrix.get(1,1));
+    public void shouldCreateMatrixWithElements() throws Exception {
+        assertEquals(1d, matrix3x3.get(0, 0));
+        assertEquals(3d, matrix3x3.get(2, 2));
+        assertEquals(2d, matrix3x3.get(1, 1));
+        assertEquals(1d, matrix3x3.get(2, 0));
     }
 
     @Test
-    public void shouldAddEachElementOfTwoMatrix() throws Exception {
-        double[][] array = {{1, 2}, {1, 2}};
-        double[][] array1 = {{1, 2}, {1, 2}};
-        Matrix matrix = new Matrix(array);
-        Matrix matrix1 = new Matrix(array1);
+    public void shouldSetCorrectValuesAtCorrectLocations() throws Exception {
+        matrix3x3.set(1, 1, 10);
 
-        Matrix result = matrix.add(matrix1);
+        assertEquals(10d, matrix3x3.get(1, 1));
+    }
 
-        assertEquals(2d,result.get(0,0));
-        assertEquals(4d,result.get(0,1));
-        assertEquals(2d,result.get(1,0));
-        assertEquals(4d,result.get(1,1));
+    @Test
+    public void shouldAddCorrespondingElementsOfOneMatrixToAnother() throws Exception {
+        Matrix result = first2x2Matrix.add(second2x2Matrix);
+
+        assertEquals(2d, result.get(0, 0));
+        assertEquals(4d, result.get(0, 1));
+        assertEquals(2d, result.get(1, 0));
+        assertEquals(4d, result.get(1, 1));
     }
 
     @Test(expected = AdditionCompatibleException.class)
-    public void addMethodShouldThrowAdditionCompatibleExceptionIfTwoMatrixAreNotEqualInSize() throws Exception {
-        double[][] array = {{1, 2}, {1, 2}};
-        double[][] array1 = {{1, 2}, {1, 2},{1,2}};
-        Matrix matrix = new Matrix(array);
-        Matrix matrix1 = new Matrix(array1);
-
-        matrix.add(matrix1);
+    public void shouldThrowAdditionCompatibleExceptionIfMatricsAreNotAdditionCompatible() throws Exception {
+        first2x2Matrix.add(matrix3x2);
     }
 
     @Test
     public void multiplicationOfMatrixToANumberShouldMultiplyEachElementWithThatNumber() throws Exception {
-        double[][] array = {{1, 2}, {1, 2}};
-        Matrix matrix = new Matrix(array);
+        Matrix result = first2x2Matrix.multiply(2);
 
-        Matrix result = matrix.multiply(2);
-
-        assertEquals(2d,result.get(0,0));
-        assertEquals(4d,result.get(0,1));
-        assertEquals(2d,result.get(1,0));
-        assertEquals(4d,result.get(1,1));
+        assertEquals(2d, result.get(0, 0));
+        assertEquals(4d, result.get(0, 1));
+        assertEquals(2d, result.get(1, 0));
+        assertEquals(4d, result.get(1, 1));
     }
 
     @Test
     public void multiplicationOfMatrixShouldFollowTheMatrixMultiplicationRule() throws Exception {
-        double[][] array = {{1, 2}, {1, 2}};
-        double[][] array1 = {{1, 2}, {1, 2}};
-        Matrix matrix = new Matrix(array);
-        Matrix matrix1 = new Matrix(array1);
+        Matrix result = first2x2Matrix.multiply(second2x2Matrix);
 
-        Matrix result = matrix.multiply(matrix1);
-
-        assertEquals(3d,result.get(0,0));
-        assertEquals(6d,result.get(0,1));
-        assertEquals(3d,result.get(1,0));
-        assertEquals(6d,result.get(1,1));
+        assertEquals(3d, result.get(0, 0));
+        assertEquals(6d, result.get(0, 1));
+        assertEquals(3d, result.get(1, 0));
+        assertEquals(6d, result.get(1, 1));
     }
 
     @Test(expected = MultiplicationCompatibleException.class)
     public void multiplicationShouldThrowMultiplicationCompatibileExceptionInMatrixAreNotCompatible() throws Exception {
-        double[][] array = {{1,2},{1,2}};
-        double[][] array1 = {{1,2},{1,2},{1,2}};
-        Matrix matrix = new Matrix(array);
-        Matrix matrix1 = new Matrix(array1);
-
-        Matrix result = matrix.multiply(matrix1);
+        first2x2Matrix.multiply(matrix3x2);
     }
 }
