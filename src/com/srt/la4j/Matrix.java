@@ -20,6 +20,7 @@ package com.srt.la4j;
 
 import com.srt.la4j.exceptions.AdditionCompatibleException;
 import com.srt.la4j.exceptions.MultiplicationCompatibleException;
+import com.srt.la4j.exceptions.NotASqaureMatrixException;
 
 @SuppressWarnings("unused")
 public class  Matrix {
@@ -157,7 +158,7 @@ public class  Matrix {
      */
     public double getDeterminant() throws Exception {
         if(!isSquareMatrix()){
-            throw new Exception("Cannot find determinant! Not a Square matrix");
+            throw new NotASqaureMatrixException("Cannot find determinant! Not a Square matrix");
         }
         return determinant();
     }

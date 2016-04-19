@@ -20,6 +20,7 @@ package com.srt.la4j;
 
 import com.srt.la4j.exceptions.AdditionCompatibleException;
 import com.srt.la4j.exceptions.MultiplicationCompatibleException;
+import com.srt.la4j.exceptions.NotASqaureMatrixException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -100,5 +101,49 @@ public class MatrixTest {
     @Test(expected = MultiplicationCompatibleException.class)
     public void multiplicationShouldThrowMultiplicationCompatibileExceptionInMatrixAreNotCompatible() throws Exception {
         first2x2Matrix.multiply(matrix3x2);
+    }
+
+    @Test
+    public void shouldGiveIdentityMatrixOn2x2() throws Exception {
+        Matrix matrix2x2 = Matrix.identity(2);
+
+        assertEquals(matrix2x2.get(0,0),1d);
+        assertEquals(matrix2x2.get(0,1),0d);
+        assertEquals(matrix2x2.get(1,1),1d);
+        assertEquals(matrix2x2.get(1,0),0d);
+    }
+
+    @Test
+    public void shouldReturnDeterminantOf1x1() throws Exception {
+        double determinant =new Matrix(new double[][]{{4}}).getDeterminant();
+
+        assertEquals(determinant,4d);
+    }
+
+    @Test
+    public void shouldReturnDeterminantOf2x2() throws Exception {
+        double determinant = first2x2Matrix.getDeterminant();
+
+        assertEquals(determinant,0d);
+    }
+
+    @Test
+    public void shouldReturnDeterminantOf3x3() throws Exception {
+        double determinant = matrix3x3.getDeterminant();
+
+        assertEquals(determinant,0d);
+    }
+
+    @Test
+    public void shouldReturnDeterminantOf4x4() throws Exception {
+        Matrix matrix = new Matrix(new double[][]{{1, 4, 3, 7}, {7, 2, 3, 12}, {15, 21, 3, 34}, {12, 45, 5, 9}});
+        double determinant = matrix.getDeterminant();
+
+        assertEquals(determinant,-15929d);
+    }
+
+    @Test(expected = NotASqaureMatrixException.class)
+    public void shouldThrowNotASqaureMatrixException() throws Exception {
+        matrix3x2.getDeterminant();
     }
 }
